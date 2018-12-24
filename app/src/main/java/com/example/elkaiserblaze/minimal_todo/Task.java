@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Task {
     private String title;
-    private Date timeFinish;
+    private Date date;
 
-    public Task(String title, Date timeFinish) {
+    public Task(String title, Date date) {
         this.title = title;
-        this.timeFinish = timeFinish;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -19,12 +19,12 @@ public class Task {
         this.title = title;
     }
 
-    public Date getTimeFinish() {
-        return timeFinish;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTimeFinish(Date timeFinish) {
-        this.timeFinish = timeFinish;
+    public void setDate(Date timeFinish) {
+        this.date = timeFinish;
     }
 
 
