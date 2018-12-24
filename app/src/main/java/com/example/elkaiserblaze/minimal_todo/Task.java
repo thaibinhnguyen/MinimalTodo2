@@ -26,6 +26,6 @@ public class Task {
     public void setTimeFinish(Date timeFinish) {
         this.timeFinish = timeFinish;
     }
-    
+
 
 }
