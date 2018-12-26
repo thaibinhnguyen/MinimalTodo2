@@ -58,6 +58,7 @@ public class TaskAdapter extends BaseAdapter {
         holder.txtTitle.setText(task.getTitle());
         String date = task.getDate();
         holder.txtDate.setText(date);
+        holder.txtLogo.setText(String.valueOf(task.getTitle().charAt(0)).toUpperCase());
         return view;
     }
 }

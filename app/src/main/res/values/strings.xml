@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Minimal-Todo</string>
+    <string name="app_name">MinimalTodo</string>
+    <string name="color_background">#f123f5</string>
 </resources>
