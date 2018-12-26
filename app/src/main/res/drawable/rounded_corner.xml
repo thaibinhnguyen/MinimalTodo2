@@ -6,7 +6,7 @@
 
         />
 
-    <solid android:color="#eea233" />
+    <solid android:color="@string/color_background" />
 
     <padding
         android:left="1dp"
