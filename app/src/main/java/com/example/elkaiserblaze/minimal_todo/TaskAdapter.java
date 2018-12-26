@@ -1,6 +1,8 @@
 package com.example.elkaiserblaze.minimal_todo;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TaskAdapter extends BaseAdapter {
     private Context context;
@@ -59,6 +62,10 @@ public class TaskAdapter extends BaseAdapter {
         String date = task.getDate();
         holder.txtDate.setText(date);
         holder.txtLogo.setText(String.valueOf(task.getTitle().charAt(0)).toUpperCase());
+        GradientDrawable gradientDrawable = (GradientDrawable) holder.txtLogo.getBackground().mutate();
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        gradientDrawable.setColor(color);
         return view;
     }
 }
