@@ -3,13 +3,23 @@ package com.example.elkaiserblaze.minimal_todo;
 import java.util.Date;
 
 public class Task {
+//    private int id;
     private String title;
-    private Date date;
+    private String date;
 
-    public Task(String title, Date date) {
+    public Task(String title, String date) {
+//        this.id = id;/
         this.title = title;
         this.date = date;
     }
+
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;
@@ -19,13 +29,11 @@ public class Task {
         this.title = title;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date timeFinish) {
-        this.date = timeFinish;
+    public void setDate(String date) {
+        this.date = date;
     }
-
-
 }

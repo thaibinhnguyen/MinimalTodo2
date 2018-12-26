@@ -14,11 +14,34 @@ import java.util.Date;
 
 public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInterface {
 
+
+    // CREATE, INSERT, UPDATE, DELETE
+    //public void QueryData(String sql){
+    //    SQLiteDatabase database = getWritableDatabase();
+    //    database.execSQL(sql);
+    //}
+    //SELECT
+/*    public Cursor GetData(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql, null);
+    }*/
+/*    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }*/
+
+
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "modules.db";
     private static final String TABLE_TASKS = "tasks"; //name of the table
     private static final String ATTRIBUTE_TITLE="title"; //attribute title
     private static final String ATTRIBUTE_DATE="date"; //attribute date
+    private static final String ATTRIBUTE_ID="id";
 
     public TaskPersistance(Context context) {
         super(context,TABLE_TASKS,null,DATABASE_VERSION);
@@ -28,6 +51,7 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     public void onCreate(SQLiteDatabase db) {
         final String table_task_create =
                 "CREATE TABLE "+TABLE_TASKS+ "(" +
+                        ATTRIBUTE_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         ATTRIBUTE_TITLE+ " TEXT," +
                         ATTRIBUTE_DATE + " TEXT"+
                         ")"
@@ -45,9 +69,9 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+//        contentValues.put(ATTRIBUTE_ID,task.getId());
         contentValues.put(ATTRIBUTE_TITLE,task.getTitle());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        contentValues.put(ATTRIBUTE_DATE,dateFormat.format(task.getDate()));
+        contentValues.put(ATTRIBUTE_DATE,task.getDate());
         long result = db.insert(TABLE_TASKS, null, contentValues);
         db.close();
     }
@@ -77,9 +101,8 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         while (res.isAfterLast()==false){
             String title=res.getString(res.getColumnIndex(ATTRIBUTE_TITLE));
             String date = res.getString(res.getColumnIndex(ATTRIBUTE_DATE));
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            Date date_task = dateFormatter.parse(date,new ParsePosition(0));
-            Task task= new Task(title,date_task);
+//            int id = res.getInt(res.getColumnIndex(ATTRIBUTE_ID));
+            Task task= new Task(title,date);
             listTasks.add(task);
             res.moveToNext();
         }
