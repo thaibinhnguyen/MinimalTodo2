@@ -6,22 +6,26 @@
     <TextView
         android:padding="10dp"
         android:id="@+id/logoTask"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@drawable/rounded_corner"
         android:gravity="center"
+        android:textColor="#ffffff"
         android:text="L" />
         <TextView
             android:layout_toRightOf="@id/logoTask"
             android:id="@+id/titleTask"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
             android:text="Title"/>
         <TextView
             android:layout_below="@id/titleTask"
             android:layout_toRightOf="@id/logoTask"
             android:id="@+id/dateTask"
             android:text="Content"
+            android:textSize="12sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="20dp" />
 </RelativeLayout>
