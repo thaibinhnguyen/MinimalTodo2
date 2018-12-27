@@ -6,7 +6,7 @@ public interface PersistanceInterface {
 
     public void addTask(Task task);
 
-    public void deleteTask(Task task);
+    public void deleteTask(int index);
 
     public void getTask(Task task);
 

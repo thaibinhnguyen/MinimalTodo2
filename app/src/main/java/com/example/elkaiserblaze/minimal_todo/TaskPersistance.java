@@ -65,6 +65,7 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         onCreate(db);
     }
 
+
     @Override
     public void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -77,8 +78,10 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     }
 
     @Override
-    public void deleteTask(Task task) {
-
+    public void deleteTask(int index) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        final String delete_task_string = "DELETE FROM "+TABLE_TASKS+" WHERE "+ ATTRIBUTE_ID+" = "+index;
+        db.execSQL(delete_task_string);
     }
 
     @Override
@@ -101,14 +104,12 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         while (res.isAfterLast()==false){
             String title=res.getString(res.getColumnIndex(ATTRIBUTE_TITLE));
             String date = res.getString(res.getColumnIndex(ATTRIBUTE_DATE));
-//            int id = res.getInt(res.getColumnIndex(ATTRIBUTE_ID));
-            Task task= new Task(title,date);
+            int id = res.getInt(res.getColumnIndex(ATTRIBUTE_ID));
+            Task task= new Task(id,title,date);
             listTasks.add(task);
             res.moveToNext();
         }
         res.close();
         return listTasks;
     }
-
-
 }

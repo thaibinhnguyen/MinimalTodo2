@@ -58,7 +58,7 @@ public class TaskAdapter extends BaseAdapter {
         }
 
         Task task = taskList.get(i);
-        holder.txtTitle.setText(task.getTitle());
+        holder.txtTitle.setText(task.getId()+". "+task.getTitle());
         String date = task.getDate();
         holder.txtDate.setText(date);
         holder.txtLogo.setText(String.valueOf(task.getTitle().charAt(0)).toUpperCase());
@@ -68,4 +68,6 @@ public class TaskAdapter extends BaseAdapter {
         gradientDrawable.setColor(color);
         return view;
     }
+
+
 }
