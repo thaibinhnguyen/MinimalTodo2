@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
         }*/
-        persistance.addTask(new Task("Lam projet", "26/12/2018 05:03"));
-        arrayTask=persistance.getAllTasks();
+//        persistance.addTask(new Task("Lam projet", "26/12/2018 05:03"));
+        arrayTask.addAll(persistance.getAllTasks());
         Toast.makeText(this,arrayTask.get(0).getTitle() + "",Toast.LENGTH_SHORT).show();
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
         lvTask.setAdapter(adapter);

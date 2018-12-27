@@ -13,7 +13,7 @@
     android:src="@drawable/add"
     android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
-    app:backgroundTint="#fff111"/>
+    app:backgroundTint="#02abf0"/>
 
     <ListView
         android:id="@+id/listViewTask"
