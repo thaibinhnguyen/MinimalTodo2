@@ -21,15 +21,29 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
-    private TaskPersistance persistance= new TaskPersistance(this);
+    private TaskPersistance persistance = new TaskPersistance(this);
     ListView lvTask;
-    ArrayList<Task> arrayTask=new ArrayList<>();
+    ArrayList<Task> arrayTask = new ArrayList<>();
     TaskAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvTask = (ListView) findViewById(R.id.listViewTask);
+
+        //receive update/add task
+        Intent intent = getIntent();
+        Bundle bundleNew = intent.getBundleExtra("bundleUpdate");
+        if(bundleNew != null){
+            Task task = (Task) bundleNew.getSerializable("taskUpdated");
+            persistance.modifyTask(task);
+        }
+        Bundle bundleAdded = intent.getBundleExtra("bundleAdd");
+        if(bundleAdded != null){
+            Task task = (Task) bundleAdded.getSerializable("taskAdd");
+            persistance.addTask(task);
+        }
         //create database
         //persistance = new TaskPersistance(this,"taskNote.sqlite",null,1);
         //create table
@@ -50,12 +64,14 @@ public class MainActivity extends AppCompatActivity {
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
         }*/
-        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
+//        persistance.deleteTable();
+//        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
+        arrayTask.clear();
         arrayTask.addAll(persistance.getAllTasks());
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
         lvTask.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
+        Toast.makeText(this, arrayTask.get(0).getId() + "",Toast.LENGTH_LONG).show();
         registerForContextMenu(lvTask);
 
         //floating button action
@@ -78,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info= (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
             case R.id.supprimer_item:
                 persistance.deleteTask(arrayTask.get(info.position).getId());
                 arrayTask.remove(info.position);
@@ -96,4 +112,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

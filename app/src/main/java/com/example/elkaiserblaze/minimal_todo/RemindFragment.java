@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,15 @@ public class RemindFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_remind, container, false);
         edtDay = (EditText) view.findViewById(R.id.editTextDay);
         edtHour = (EditText) view.findViewById(R.id.editTextHour);
+        //get data from second activity
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Task taskReceived = (Task) bundle.getSerializable("taskForFrag");
+            String date_string = taskReceived.getDate();
+            String[] parts = date_string.split(" ");
+            edtDay.setText(parts[0]);
+            edtHour.setText(parts[1]);
+        }
         edtDay.setFocusable(false);
         edtHour.setFocusable(false);
         edtDay.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +60,7 @@ public class RemindFragment extends Fragment {
         int day = 0;
         int month = 0;
         int year = 0;
-        if(edtDay.getText().toString() != "Today"){
+        if (edtDay.getText().toString() != "Today") {
             DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 Date d = f.parse(edtDay.getText().toString());
