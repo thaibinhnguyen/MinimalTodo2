@@ -13,4 +13,6 @@ public interface PersistanceInterface {
     public void iniData();
 
     public ArrayList<Task> getAllTasks();
+
+    public void modifyTask(Task task);
 }

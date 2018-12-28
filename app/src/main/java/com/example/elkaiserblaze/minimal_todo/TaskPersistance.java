@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -39,23 +40,22 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "modules.db";
     private static final String TABLE_TASKS = "tasks"; //name of the table
-    private static final String ATTRIBUTE_TITLE="title"; //attribute title
-    private static final String ATTRIBUTE_DATE="date"; //attribute date
-    private static final String ATTRIBUTE_ID="id";
+    private static final String ATTRIBUTE_TITLE = "title"; //attribute title
+    private static final String ATTRIBUTE_DATE = "date"; //attribute date
+    private static final String ATTRIBUTE_ID = "id";
 
     public TaskPersistance(Context context) {
-        super(context,TABLE_TASKS,null,DATABASE_VERSION);
+        super(context, TABLE_TASKS, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String table_task_create =
-                "CREATE TABLE "+TABLE_TASKS+ "(" +
-                        ATTRIBUTE_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        ATTRIBUTE_TITLE+ " TEXT," +
-                        ATTRIBUTE_DATE + " TEXT"+
-                        ")"
-                ;
+                "CREATE TABLE " + TABLE_TASKS + "(" +
+                        ATTRIBUTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        ATTRIBUTE_TITLE + " TEXT," +
+                        ATTRIBUTE_DATE + " TEXT" +
+                        ")";
         db.execSQL(table_task_create);
     }
 
@@ -65,7 +65,7 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         onCreate(db);
     }
 
-    public void deleteTable(){
+    public void deleteTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
         onCreate(db);
@@ -76,8 +76,8 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 //        contentValues.put(ATTRIBUTE_ID,task.getId());
-        contentValues.put(ATTRIBUTE_TITLE,task.getTitle());
-        contentValues.put(ATTRIBUTE_DATE,task.getDate());
+        contentValues.put(ATTRIBUTE_TITLE, task.getTitle());
+        contentValues.put(ATTRIBUTE_DATE, task.getDate());
         long result = db.insert(TABLE_TASKS, null, contentValues);
         db.close();
     }
@@ -85,7 +85,7 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     @Override
     public void deleteTask(int index) {
         SQLiteDatabase db = this.getWritableDatabase();
-        final String delete_task_string = "DELETE FROM "+TABLE_TASKS+" WHERE "+ ATTRIBUTE_ID+" = "+index;
+        final String delete_task_string = "DELETE FROM " + TABLE_TASKS + " WHERE " + ATTRIBUTE_ID + " = " + index;
         db.execSQL(delete_task_string);
     }
 
@@ -102,19 +102,28 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
     @Override
     public ArrayList<Task> getAllTasks() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_TASKS;
-        Cursor res = db.rawQuery(query,null);
-        ArrayList<Task> listTasks= new ArrayList<Task>();
+        String query = "SELECT * FROM " + TABLE_TASKS;
+        Cursor res = db.rawQuery(query, null);
+        ArrayList<Task> listTasks = new ArrayList<Task>();
         res.moveToFirst();
-        while (res.isAfterLast()==false){
-            String title=res.getString(res.getColumnIndex(ATTRIBUTE_TITLE));
+        while (res.isAfterLast() == false) {
+            String title = res.getString(res.getColumnIndex(ATTRIBUTE_TITLE));
             String date = res.getString(res.getColumnIndex(ATTRIBUTE_DATE));
             int id = res.getInt(res.getColumnIndex(ATTRIBUTE_ID));
-            Task task= new Task(id,title,date);
+            Task task = new Task(id, title, date);
             listTasks.add(task);
             res.moveToNext();
         }
         res.close();
         return listTasks;
+    }
+
+    @Override
+    public void modifyTask(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ATTRIBUTE_TITLE, task.getTitle());
+        contentValues.put(ATTRIBUTE_DATE, task.getDate());
+        db.update(TABLE_TASKS,contentValues,ATTRIBUTE_ID+"="+task.getId(),null);
     }
 }
