@@ -31,11 +31,11 @@ public class NotificationChannelDeclaration extends Application {
         }
     }
 
-    public static void sendNotificationAlarm(Context context){
+    public void sendNotificationAlarm(Context context,Task task){
         Notification notification_alarm= new NotificationCompat.Builder(context,NotificationChannelDeclaration.CHANNEL_ALARM_ID)
                 .setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle("PHUCccccccccc")
-                .setContentText("dayyyyyyyy")
+                .setContentTitle(task.getTitle())
+                .setContentText(task.getDate())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
         NotificationManagerCompat notificationManager;
