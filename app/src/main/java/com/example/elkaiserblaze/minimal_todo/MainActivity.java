@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
 //        }*/
-//        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
+////        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
 //        persistance.deleteTable();
         arrayTask.addAll(persistance.getAllTasks());
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent= new Intent(this,AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,now.getTimeInMillis(),pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,now.getTimeInMillis()+60000,pendingIntent);
     }
 
 }
