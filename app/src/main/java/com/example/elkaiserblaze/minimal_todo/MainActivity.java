@@ -20,7 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
-//        }*/
-////        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
-//        persistance.deleteTable();
+        }*/
+//        persistance.addTask(new Task("Di quay", "28/12/2018 16:53"));
         arrayTask.addAll(persistance.getAllTasks());
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
         lvTask.setAdapter(adapter);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //        sendNotificationAlarm(this);
-        setAlarm();
+//        setAlarm(new Task("Di quay", ""));
     }
 
     @Override
@@ -97,17 +97,37 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 return true;
             default:
-                return super.onContextItemSelected(item);
+                Task task = arrayTask.get(info.position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("taskMod", task);
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+                return true;
         }
     }
 
 
-    public void setAlarm(){
-        Calendar now=Calendar.getInstance();
-        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent= new Intent(this,AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,now.getTimeInMillis()+60000,pendingIntent);
-    }
+    public void setAlarm(Task task) {
+        if(!task.getDate().equals("")){
+            Calendar now=Calendar.getInstance();
+            AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent= new Intent(this,AlertReceiver.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("task",task);
+            intent.putExtra("dataTask",bundle);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Calendar timeFinished=Calendar.getInstance();
+            try {
+                timeFinished.setTime(sdf.parse(task.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,timeFinished.getTimeInMillis(),pendingIntent);
+        }else {
+            Log.i("From setAlarm","no date");
+        }
 
+    }
 }
