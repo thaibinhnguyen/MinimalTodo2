@@ -87,13 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 return true;
             default:
-                Task task = arrayTask.get(info.position);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("taskMod", (Serializable) task);
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                intent.putExtra("data", bundle);
-                startActivity(intent);
-                return true;
+                return super.onContextItemSelected(item);
         }
 
     }

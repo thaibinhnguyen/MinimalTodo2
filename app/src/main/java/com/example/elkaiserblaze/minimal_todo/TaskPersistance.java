@@ -65,6 +65,11 @@ public class TaskPersistance extends SQLiteOpenHelper implements PersistanceInte
         onCreate(db);
     }
 
+    public void deleteTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+        onCreate(db);
+    }
 
     @Override
     public void addTask(Task task) {
