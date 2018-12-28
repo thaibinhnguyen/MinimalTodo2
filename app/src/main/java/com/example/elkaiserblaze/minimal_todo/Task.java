@@ -1,8 +1,9 @@
 package com.example.elkaiserblaze.minimal_todo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
     private int id;
     private String title;
     private String date;

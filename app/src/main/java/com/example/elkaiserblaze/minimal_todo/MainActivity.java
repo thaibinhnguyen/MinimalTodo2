@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
         }*/
-        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
+//        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
         arrayTask.addAll(persistance.getAllTasks());
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
         lvTask.setAdapter(adapter);
@@ -86,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 return true;
             default:
-                return super.onContextItemSelected(item);
+                Task task = arrayTask.get(info.position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("taskMod", (Serializable) task);
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+                return true;
         }
 
     }
