@@ -1,8 +1,14 @@
 package com.example.elkaiserblaze.minimal_todo;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +23,7 @@ import android.widget.Toast;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             int id = dataTask.getInt(0);
             arrayTask.add(new Task(id, title, date_task));
 //        }*/
-////        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
+//        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
 //        persistance.deleteTable();
         arrayTask.addAll(persistance.getAllTasks());
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
@@ -68,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//        sendNotificationAlarm(this);
+        setAlarm();
     }
 
     @Override
@@ -89,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onContextItemSelected(item);
         }
-
     }
+
+
+    public void setAlarm(){
+        Calendar now=Calendar.getInstance();
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent= new Intent(this,AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,now.getTimeInMillis(),pendingIntent);
+    }
+
 }
