@@ -2,6 +2,7 @@ package com.example.elkaiserblaze.minimal_todo;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class SecondActivity extends AppCompatActivity {
     FloatingActionButton floatSend;
     int action; //action = 0 if add, action = 1 if modify
     Task task;
+    Context self=this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +98,24 @@ public class SecondActivity extends AppCompatActivity {
 
                 }
                 String title = edtTask.getText().toString();
-                if (action == 1) {
-                    Task taskUpdated = new Task(task.getId(), title, datetime);
-                    Bundle bundleUpdate = new Bundle();
-                    bundleUpdate.putSerializable("taskUpdated", taskUpdated);
-                    Intent intent1 = new Intent(SecondActivity.this, MainActivity.class);
-                    intent1.putExtra("bundleUpdate", bundleUpdate);
-                    startActivity(intent1);
+                if (!title.equals("")) {
+                    if (action == 1) {
+                        Task taskUpdated = new Task(task.getId(), title, datetime);
+                        Bundle bundleUpdate = new Bundle();
+                        bundleUpdate.putSerializable("taskUpdated", taskUpdated);
+                        Intent intent1 = new Intent(SecondActivity.this, MainActivity.class);
+                        intent1.putExtra("bundleUpdate", bundleUpdate);
+                        startActivity(intent1);
+                    } else {
+                        Task taskAdd = new Task(title, datetime);
+                        Bundle bundleAdd = new Bundle();
+                        bundleAdd.putSerializable("taskAdd", taskAdd);
+                        Intent intent2 = new Intent(SecondActivity.this, MainActivity.class);
+                        intent2.putExtra("bundleAdd", bundleAdd);
+                        startActivity(intent2);
+                    }
                 } else {
-                    Task taskAdd = new Task(title, datetime);
-                    Bundle bundleAdd = new Bundle();
-                    bundleAdd.putSerializable("taskAdd", taskAdd);
-                    Intent intent2 = new Intent(SecondActivity.this, MainActivity.class);
-                    intent2.putExtra("bundleAdd", bundleAdd);
-                    startActivity(intent2);
+                    Toast.makeText(self,"Merci de remplir title",Toast.LENGTH_LONG).show();
                 }
             }
         });

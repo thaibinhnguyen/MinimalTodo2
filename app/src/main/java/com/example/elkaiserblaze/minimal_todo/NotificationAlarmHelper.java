@@ -4,12 +4,14 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-public class NotificationChannelDeclaration extends Application {
+public class NotificationAlarmHelper extends Application {
     public static final String CHANNEL_ALARM_ID="channel_alarm";
     @Override
     public void onCreate() {
@@ -32,8 +34,15 @@ public class NotificationChannelDeclaration extends Application {
     }
 
     public void sendNotificationAlarm(Context context,Task task){
-        Notification notification_alarm= new NotificationCompat.Builder(context,NotificationChannelDeclaration.CHANNEL_ALARM_ID)
+
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification_alarm= new NotificationCompat.Builder(context,NotificationAlarmHelper.CHANNEL_ALARM_ID)
                 .setSmallIcon(R.drawable.ic_alarm)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDate())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

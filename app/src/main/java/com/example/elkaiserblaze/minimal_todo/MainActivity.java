@@ -47,11 +47,17 @@ public class MainActivity extends AppCompatActivity {
         if(bundleNew != null){
             Task task = (Task) bundleNew.getSerializable("taskUpdated");
             persistance.modifyTask(task);
+            task = persistance.getAllTasks().get(persistance.getAllTasks().size()-1);
+            setAlarm(task);
+            Log.i("modifyTag",task.getId()+" "+task.getTitle()+" "+task.getDate());
         }
         Bundle bundleAdded = intent.getBundleExtra("bundleAdd");
         if(bundleAdded != null){
             Task task = (Task) bundleAdded.getSerializable("taskAdd");
             persistance.addTask(task);
+            task = persistance.getAllTasks().get(persistance.getAllTasks().size()-1);
+            setAlarm(task);
+            Log.i("addtag",task.getId()+" "+task.getTitle()+" "+task.getDate());
         }
         //create database
         //persistance = new TaskPersistance(this,"taskNote.sqlite",null,1);
@@ -74,10 +80,11 @@ public class MainActivity extends AppCompatActivity {
             arrayTask.add(new Task(id, title, date_task));
         }*/
 //        persistance.addTask(new Task("Di quay", "28/12/2018 16:53"));
-//        persistance.deleteTable();
+//        persistance.deleteTable()
 //        persistance.addTask(new Task("Di choi", "29/12/2018 06:03"));
         arrayTask.clear();
         arrayTask.addAll(persistance.getAllTasks());
+        Log.i("lengthArrayTask",arrayTask.size()+"");
         adapter = new TaskAdapter(this, R.layout.layout_line, arrayTask);
         lvTask.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -110,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.supprimer_item:
                 persistance.deleteTask(arrayTask.get(info.position).getId());
+                cancelAlarm(arrayTask.get(info.position));
                 arrayTask.remove(info.position);
                 adapter.notifyDataSetChanged();
                 return true;
@@ -127,13 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setAlarm(Task task) {
         if(!task.getDate().equals("")){
-            Calendar now=Calendar.getInstance();
             AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent= new Intent(this,AlertReceiver.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("task",task);
             intent.putExtra("dataTask",bundle);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,task.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Calendar timeFinished=Calendar.getInstance();
             try {
@@ -142,10 +149,22 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,timeFinished.getTimeInMillis(),pendingIntent);
+            Log.i("From setAlarm","time set up");
         }else {
             Log.i("From setAlarm","no date");
         }
+    }
 
+    public void cancelAlarm(Task task){
+        if(!task.getDate().equals("")){
+            AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent= new Intent(this,AlertReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,task.getId(),intent,0);
+            alarmManager.cancel(pendingIntent);
+            Log.i("From cancelAlarm","alarm cancel");
+        }else {
+            Log.i("From cancelAlarm","no date");
+        }
     }
 
 
