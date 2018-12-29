@@ -43,7 +43,7 @@ public class NotificationAlarmHelper extends Application {
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
-                .setContentTitle(task.getTitle())
+                .setContentTitle("TO DO: "+task.getTitle())
                 .setContentText(task.getDate())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
