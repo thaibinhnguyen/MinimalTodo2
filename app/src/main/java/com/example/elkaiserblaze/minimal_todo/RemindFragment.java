@@ -33,10 +33,12 @@ public class RemindFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             Task taskReceived = (Task) bundle.getSerializable("taskForFrag");
-            String date_string = taskReceived.getDate();
-            String[] parts = date_string.split(" ");
-            edtDay.setText(parts[0]);
-            edtHour.setText(parts[1]);
+            if (!taskReceived.getDate().equals("")) {
+                String date_string = taskReceived.getDate();
+                String[] parts = date_string.split(" ");
+                edtDay.setText(parts[0]);
+                edtHour.setText(parts[1]);
+            }
         }
         edtDay.setFocusable(false);
         edtHour.setFocusable(false);

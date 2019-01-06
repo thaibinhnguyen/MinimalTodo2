@@ -39,16 +39,20 @@ public class SecondActivity extends AppCompatActivity {
             action = 1;
 //            Toast.makeText(this, task.getTitle(), Toast.LENGTH_SHORT).show();
             edtTask.setText(task.getTitle());
-            swtRemind.setChecked(true);
-            // initiate fragment
-            FragmentManager fragmentManager1 = getFragmentManager();
-            FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            RemindFragment remindFragment1 = new RemindFragment();
-            Bundle bundleSecond = new Bundle();
-            bundleSecond.putSerializable("taskForFrag", task);
-            remindFragment1.setArguments(bundleSecond);
-            fragmentTransaction1.add(R.id.frameLayoutDate, remindFragment1, "remindFragment");
-            fragmentTransaction1.commit();
+            if(!task.getDate().equals("")){
+                swtRemind.setChecked(true);
+                // initiate fragment
+                FragmentManager fragmentManager1 = getFragmentManager();
+                FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+                RemindFragment remindFragment1 = new RemindFragment();
+                Bundle bundleSecond = new Bundle();
+                bundleSecond.putSerializable("taskForFrag", task);
+                remindFragment1.setArguments(bundleSecond);
+                fragmentTransaction1.add(R.id.frameLayoutDate, remindFragment1, "remindFragment");
+                fragmentTransaction1.commit();
+            }else{
+                swtRemind.setChecked(false);
+            }
         } else {
             action = 0;
             swtRemind.setChecked(false);
